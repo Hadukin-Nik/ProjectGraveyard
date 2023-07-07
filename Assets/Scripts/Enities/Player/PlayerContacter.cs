@@ -8,7 +8,8 @@ using UnityEngine;
 public class PlayerContacter : MonoBehaviour
 {
     [SerializeField] private LayerMask whatIsGround;
-
+    [SerializeField] private float timeStun;
+    
     private PlayerMovement pm;
     private bool haveKey;
 
@@ -33,9 +34,14 @@ public class PlayerContacter : MonoBehaviour
                 trap.TrapAction();
                 break;
             case "Enemy":
-                pm.
-                
+                pm.Stun(timeStun);
+                break;
         }
+    }
+
+    public bool HaveAKey()
+    {
+        return haveKey;
     }
     
 }

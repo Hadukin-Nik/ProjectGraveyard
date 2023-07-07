@@ -12,13 +12,17 @@ namespace Objects
         
         [SerializeField] private bool isMovable = true;
         [SerializeField] private Transform connectedTo;
+        [SerializeField] private bool neededAKey;
+
+        private PlayerContacter pc;
         
         private Vector3 originalDistToSourcePlatfrom;
-        
+
         private float timer;
         private bool activated;
         public void Start()
         {
+            pc = (PlayerContacter)GameObject.FindObjectsOfType(typeof(PlayerContacter))[0];
             timer = maxTime;
             if(isMovable)
             originalDistToSourcePlatfrom = connectedTo.position - this.transform.position;
@@ -26,13 +30,13 @@ namespace Objects
 
         public void TrapAction()
         {
-            moveAllPlatforms(true);
+            if(!neededAKey || neededAKey && pc.HaveAKey()) moveAllPlatforms(true);
         }
 
         public void Update()
         {
-            if(isMovable)
-            transform.position = connectedTo.position - originalDistToSourcePlatfrom;
+            if(isMovable) transform.position = connectedTo.position - originalDistToSourcePlatfrom;
+            
             if (activated)
             {
                 if (timer > 0)

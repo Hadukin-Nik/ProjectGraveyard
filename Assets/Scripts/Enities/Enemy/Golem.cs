@@ -27,7 +27,7 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pw.isOnGround() && canIRun() && destination.sqrMagnitude <= 0.001)
+        if (pw.IsOnGround() && canIRun() && destination.sqrMagnitude <= 0.001)
         {
             destination = (pw.transform.position - transform.position) * speed;
         }

@@ -15,10 +15,15 @@ public class PlayerMovement : MonoBehaviour
     private PlayerContacter playerContacter;
     
     private Rigidbody rb;
+
+    private float timeOnStun;
+    
     private bool isGrounded;
+    
     // Start is called before the first frame update
     void Start()
     {
+        timeOnStun = -1;
         rb = this.GetComponent<Rigidbody>();
         playerContacter = this.GetComponent<PlayerContacter>();
         
@@ -26,9 +31,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        isGrounded = isOnGround();
+    void Update() {
+        if (timeOnStun > 0)
+        {
+            timeOnStun -= Time.deltaTime;
+            return;
+        }
+        isGrounded = IsOnGround();
         
         HandleMovement();
 
@@ -87,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
     
     
     
-    public bool isOnGround()
+    public bool IsOnGround()
     {
         RaycastHit hit = new RaycastHit();
         if (Physics.SphereCast(transform.position, playerWidth / 2, Vector3.down, out hit, playerHeight / 2, whatIsGround))
@@ -96,6 +105,9 @@ public class PlayerMovement : MonoBehaviour
         };
         return false;
     }
-    
-    
+
+    public void Stun(float time)
+    {
+        timeOnStun = time;
+    }
 }
