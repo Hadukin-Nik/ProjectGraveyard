@@ -30,7 +30,7 @@ namespace Objects
 
         public void TrapAction()
         {
-            if(!neededAKey || neededAKey && pc.HaveAKey()) moveAllPlatforms(true);
+            if(!neededAKey || (neededAKey && pc.HaveAKey())) moveAllPlatforms(true);
         }
 
         public void Update()

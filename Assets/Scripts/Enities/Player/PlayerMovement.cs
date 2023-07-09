@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
 
     private PlayerContacter playerContacter;
+
+    private Animator animator;
     
     private Rigidbody rb;
 
@@ -28,10 +31,13 @@ public class PlayerMovement : MonoBehaviour
         playerContacter = this.GetComponent<PlayerContacter>();
         
         rb.freezeRotation = true;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
+        if (transform.position.y < -40) SceneManager.LoadScene("Scenes/SampleScene");
         if (timeOnStun > 0)
         {
             timeOnStun -= Time.deltaTime;
@@ -84,10 +90,16 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direction = new Vector3(moveX, 0, moveZ);
         if (isGrounded)
         {
+            animator.SetFloat("Speed", direction.sqrMagnitude);
             rb.AddForce(direction.normalized * speed, ForceMode.Force);
             transform.rotation = Quaternion.Slerp(transform.rotation,  Quaternion.LookRotation(direction.normalized), 1);
         }
-
+        else
+        {   
+            animator.SetFloat("Speed", 0);
+            rb.AddForce(direction.normalized * speed / 2, ForceMode.Force);
+        }
+        
 
         //rotate us over time according to speed until we are in the required rotation
         if (moveY != 0 && isGrounded) rb.AddForce(Vector3.up * forceOfJump * 100f, ForceMode.Force);

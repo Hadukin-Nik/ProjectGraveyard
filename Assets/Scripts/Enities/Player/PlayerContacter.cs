@@ -22,22 +22,42 @@ public class PlayerContacter : MonoBehaviour
     {
         switch (other.gameObject.tag)
         {
-            case "Collectable":
-                if (other.gameObject.name.Contains("key"))
-                {
-                    haveKey = true;
-                    other.gameObject.SetActive(false);
-                }
+            case "Key":
+                haveKey = true;
+                other.gameObject.SetActive(false);
                 break;
             case "Trap":
                 ITrap trap = other.gameObject.GetComponent<Trap>();
                 trap.TrapAction();
                 break;
-            case "Enemy":
+            
+            
+            default:
+                transform.SetParent(other.transform);
+                break;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            default:
+                transform.SetParent(null);
+                break;
+        }    }
+
+    public void OnCollisionEnter(Collision other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "Golem":
                 pm.Stun(timeStun);
                 break;
         }
     }
+    
+    
 
     public bool HaveAKey()
     {
