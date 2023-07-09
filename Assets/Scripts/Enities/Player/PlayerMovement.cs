@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     
     private Rigidbody rb;
 
+    private Vector3 lastDirection;
+    
     private float timeOnStun;
     
     private bool isGrounded;
@@ -32,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         
         rb.freezeRotation = true;
         animator = GetComponent<Animator>();
+        lastDirection = new Vector3();
     }
 
     // Update is called once per frame
@@ -88,11 +91,16 @@ public class PlayerMovement : MonoBehaviour
         }
         
         Vector3 direction = new Vector3(moveX, 0, moveZ);
+        
+        if(direction.sqrMagnitude > 0.01)
+        {
+            lastDirection = direction;
+        }
         if (isGrounded)
         {
             animator.SetFloat("Speed", direction.sqrMagnitude);
             rb.AddForce(direction.normalized * speed, ForceMode.Force);
-            transform.rotation = Quaternion.Slerp(transform.rotation,  Quaternion.LookRotation(direction.normalized), 1);
+            transform.rotation = Quaternion.Slerp(transform.rotation,  Quaternion.LookRotation(lastDirection.normalized), 1);
         }
         else
         {   

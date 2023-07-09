@@ -22,10 +22,7 @@ public class PlayerContacter : MonoBehaviour
     {
         switch (other.gameObject.tag)
         {
-            case "Key":
-                haveKey = true;
-                other.gameObject.SetActive(false);
-                break;
+            
             case "Trap":
                 ITrap trap = other.gameObject.GetComponent<Trap>();
                 trap.TrapAction();
@@ -51,6 +48,10 @@ public class PlayerContacter : MonoBehaviour
     {
         switch (other.gameObject.tag)
         {
+            case "Key":
+                haveKey = true;
+                other.gameObject.SetActive(false);
+                break;
             case "Golem":
                 pm.Stun(timeStun);
                 break;
